@@ -1,4 +1,4 @@
-import deliverx from "../utils/deliverX.png";
+import deliverx from "../utils/deliver.png";
 import ai_coach from "../utils/interview2.png";
 import estate_ai from "../utils/estateAi.png";
 import crop_disease from "../utils/crop.png";
