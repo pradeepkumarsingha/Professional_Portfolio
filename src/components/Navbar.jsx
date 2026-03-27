@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaBars, FaTimes } from 'react-icons/fa';
-import logo from '../utils/image.png';
+import logo from '../utils/logo4.png';
 
 const navLinks = [
   { name: 'Home', id: 'home' },
@@ -58,7 +58,7 @@ export default function Navbar() {
             <img
               src={logo}
               alt="Logo"
-              className="w-16 h-16 rounded-full object-cover border-2 border-purple-500/30 shadow-[0_0_15px_rgba(168,85,247,0.4)]"
+              className="w-16 h-16 rounded-full object-cover  border-2 border-purple-500/30 shadow-[0_0_15px_rgba(168,85,247,0.4)]"
             />
           </motion.div>
 
