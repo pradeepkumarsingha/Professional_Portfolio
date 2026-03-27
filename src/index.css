@@ -1,0 +1,91 @@
+@import "tailwindcss";
+/* LINE 1: Move it here */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ... the rest of your 1600+ lines of code ... */
+@theme {
+  --color-primary-dark: #0f172a;
+  --color-secondary-dark: #1e293b;
+  --color-accent-blue: #3b82f6;
+  --color-accent-purple: #8b5cf6;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    @apply bg-[#0f172a] text-slate-200 antialiased selection:bg-accent-purple/30 selection:text-white;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500;
+  }
+
+  .bg-gradient-dark {
+    @apply bg-gradient-to-br from-[#0f172a] to-[#1e293b];
+  }
+
+  .glassmorphism {
+    @apply bg-white/5 backdrop-blur-md border border-white/10 shadow-xl;
+  }
+}
+
+@keyframes gradientMove {
+  0% {
+    background-position: 0%
+  }
+
+  100% {
+    background-position: 200%
+  }
+}
+
+.animate-gradient {
+  background-size: 200%;
+  animation: gradientMove 3s linear infinite;
+}
+
+.perspective {
+  perspective: 1000px;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Smooth section transitions */
+section {
+  position: relative;
+}
+
+/* Custom scrollbar for the whole page */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #3b82f6, #8b5cf6);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #60a5fa, #a78bfa);
+}
