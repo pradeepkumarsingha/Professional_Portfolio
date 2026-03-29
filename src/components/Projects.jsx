@@ -10,6 +10,7 @@ export default function Projects() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.95, ease: 'easeOut' }}
           viewport={{ once: true }}
           className="text-center mb-16"
         >
@@ -24,7 +25,7 @@ export default function Projects() {
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              transition={{ delay: idx * 0.1 }}
+              transition={{ duration: 0.9, delay: idx * 0.16, ease: 'easeOut' }}
               className={`glassmorphism flex flex-col rounded-2xl overflow-hidden group border border-white/5 hover:border-blue-500/30 transition-all ${project.featured ? 'ring-1 ring-purple-500/50 shadow-[0_0_15px_rgba(168,85,247,0.15)]' : ''}`}
             >
               <div className="relative overflow-hidden h-52">

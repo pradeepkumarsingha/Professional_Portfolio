@@ -64,13 +64,25 @@ export default function Achievements() {
                 className="flex-shrink-0 w-[280px] bg-white/5 backdrop-blur-lg rounded-2xl border border-white/10 p-4 hover:scale-105 transition"
               >
                 {/* Image */}
-                <div className="w-full h-40 overflow-hidden rounded-lg mb-3">
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
-                  />
-                </div>
+                <div
+  className="w-full h-40 overflow-hidden rounded-lg mb-3 relative group cursor-pointer"
+  onClick={() => window.open(item.image, "_blank")}
+  style={{ cursor: "zoom-in" }}
+>
+  <img
+    src={item.image}
+    alt={item.title}
+    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+  />
+
+  {/* Overlay */}
+  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-6">
+    <span className="text-white font-semibold bg-white/10 backdrop-blur-sm px-4 py-1.5 rounded-full text-sm border border-white/20">
+      🔍 View
+    </span>
+  </div>
+</div>
+                
 
                 {/* Content */}
                 <h3 className="text-white font-bold text-lg">

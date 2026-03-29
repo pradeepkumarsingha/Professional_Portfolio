@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import profileImg from '../utils/me.pk.jpg';
+// import profileImg from '../utils/me.pk.jpg';
+import profileImg from '../utils/prof.jpg'
 import resume from '../utils/aiml.pdf';
 
 export default function Hero() {

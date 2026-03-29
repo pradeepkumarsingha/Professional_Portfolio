@@ -13,6 +13,7 @@ export default function Gallery() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.95, ease: "easeOut" }}
           viewport={{ once: true }}
           className="text-center mb-12"
         >
@@ -30,7 +31,7 @@ export default function Gallery() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: idx * 0.1 }}
+              transition={{ duration: 0.95, delay: idx * 0.18, ease: "easeOut" }}
             >
 
               {/* Section Title */}
