@@ -10,6 +10,9 @@ export default function Contact() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log("SERVICE:", import.meta.env.VITE_EMAILJS_SERVICE_ID);
+    console.log("TEMPLATE:", import.meta.env.VITE_EMAILJS_TEMPLATE_ID);
+   console.log("PUBLIC:", import.meta.env.VITE_EMAILJS_PUBLIC_KEY);
     setLoading(true);
     setStatus(null);
 
