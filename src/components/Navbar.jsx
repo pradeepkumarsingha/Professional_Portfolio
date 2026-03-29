@@ -37,14 +37,18 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+
+  
   const scrollToSection = (id) => {
+  setMobileOpen(false); // close menu FIRST
+
+  setTimeout(() => {
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
-    setMobileOpen(false);
-  };
-
+  }, 100); // slight delay helps mobile rendering
+};
   return (
     <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-[#0f172a]/90 backdrop-blur-md shadow-lg border-b border-white/5' : 'bg-transparent'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
