@@ -25,4 +25,4 @@ export const skills = {
     {name:"GEN AI", level: 80, icon: SiTensorflow, color: "#FF6F00"}
 
   ]
-};
+}
