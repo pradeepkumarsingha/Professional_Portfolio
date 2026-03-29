@@ -21,7 +21,7 @@ export const skills = {
     { name: "NumPy", level: 78, icon: FaPython, color: "#013243" },
     { name: "Keras", level: 70, icon: SiTensorflow, color: "#D00000" },
     { name: "Computer Vision", level: 75, icon: SiTensorflow, color: "#FF6F00" },
-    { name: "Natural Language Processing", level: 80, icon: SiScikitlearn, color: "#F7931E" }
+    { name: "Natural Language Processing", level: 80, icon: SiScikitlearn, color: "#F7931E" },
     {name:"GEN AI", level: 80, icon: SiTensorflow, color: "#FF6F00"}
 
   ]
