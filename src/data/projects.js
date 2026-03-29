@@ -2,6 +2,8 @@ import deliverx from "../utils/deliver.png";
 import ai_coach from "../utils/interview2.png";
 import estate_ai from "../utils/estateAi.png";
 import crop_disease from "../utils/crop.png";
+import portfolio from "../utils/portfolio.png";
+
 export const projects = [
   {
     id: 1,
@@ -131,5 +133,34 @@ export const projects = [
     liveUrl: null,
 
     featured: true
+  },
+  {
+    id: 5,
+    title: "PKS Portfolio",
+    description:
+      "A personal portfolio website built with React and Tailwind CSS, showcasing projects, skills, and achievements in a visually appealing and responsive design.",
+
+    image: portfolio,
+
+    techStack: [
+      "React",
+      "Tailwind CSS",
+      "Framer Motion",
+      "JavaScript",
+      "HTML",
+      "CSS"
+    ],
+
+    highlights: [
+      "Built with React and Tailwind CSS for a modern and responsive design",
+      "Showcases projects, skills, and achievements in a visually appealing way",
+      "Includes smooth animations and interactive elements using Framer Motion",
+      "Optimized for performance and accessibility",
+      "Deployed on Vercel for fast and reliable hosting"
+    ],
+    githubUrl: "https://github.com/pradeepkumarsingha/Professional_Portfolio",
+    liveUrl: "https://pradeepsportfoliopks.netlify.app/",
+    featured: false
+
   }
 ];
