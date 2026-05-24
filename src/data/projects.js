@@ -3,6 +3,7 @@ import ai_coach from "../utils/interview2.png";
 import estate_ai from "../utils/estateAi.png";
 import crop_disease from "../utils/crop.png";
 import portfolio from "../utils/portfolio.png";
+import krushi_sathi from "../utils/krushi-sathi.jpg";
 
 export const projects = [
   {
@@ -160,6 +161,39 @@ export const projects = [
     ],
     githubUrl: "https://github.com/pradeepkumarsingha/Professional_Portfolio",
     liveUrl: "https://pradeepsportfoliopks.netlify.app/",
+    featured: false
+
+  },
+
+  {
+    id: 6,
+    title: "Krushi Sathi",
+    description:
+      "An AI-powered precision agriculture ecosystem that converts soil data, real-time weather metrics, and leaf imagery into actionable farming insights, maximizing yield and diagnosing crop diseases.",
+
+    image: krushi_sathi,
+
+    techStack: [
+      "Flask",
+      "Python",
+      "React",
+      "Tailwind CSS",
+      "TensorFlow Lite",
+      "Scikit-Learn",
+      "Pandas",
+      "Joblib",
+      'GEN AI'
+    ],
+
+    highlights: [
+      "Engineered multi-stage predictive ML models for crop recommendation and accurate regional yield estimation",
+      "Integrated OpenWeather API to provide dynamic, weather-adaptive irrigation schedules and real-time climate alerts",
+      "Implemented a lightweight computer vision pipeline using TFLite to diagnose leaf diseases and prescribe treatment dosages",
+      "Optimized backend architecture with lazy-loading models to eliminate server cold-start delays and drop boot times under 2 seconds",
+      "Built a highly responsive, intuitive frontend dashboard for tracking soil health metrics and regional weather variables"
+    ],
+    githubUrl: "https://github.com/pradeepkumarsingha/Krushi-Sathi",
+    liveUrl: "https://krushi-sathi.vercel.app/",
     featured: false
 
   }

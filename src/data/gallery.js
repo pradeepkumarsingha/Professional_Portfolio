@@ -8,6 +8,7 @@ import podcast2 from "../utils/gallary/podcast2.jpg";
 import aiproject from "../utils/gallary/aiproject.png";
 import aiproject2 from "../utils/gallary/aiproject2.png";
 
+
 export const gallery = [
   {
     title: "Hackathon",
