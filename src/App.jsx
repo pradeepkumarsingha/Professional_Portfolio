@@ -12,6 +12,7 @@ import Achievements from './components/Achievements';
 import Gallery from './components/Gallery';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import Education from './components/Education';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -33,6 +34,7 @@ function App() {
           <Hero />
           <About />
           <Skills />
+          <Education />
           <Projects />
           <Experience />
           <Achievements />

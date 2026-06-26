@@ -1,5 +1,5 @@
 import deliverx from "../utils/deliver.png";
-import ai_coach from "../utils/interview2.png";
+import carrier_twin from "../utils/carrier_twin.png";
 import estate_ai from "../utils/estateAi.png";
 import crop_disease from "../utils/crop.png";
 import portfolio from "../utils/portfolio.png";
@@ -8,68 +8,74 @@ import krushi_sathi from "../utils/krushi-sathi.jpg";
 export const projects = [
   {
     id: 1,
-    title: "DeliverX",
+    title: "Krushi Sathi",
     description:
-      "A scalable full-stack food delivery platform with real-time order tracking, OTP-based delivery verification, and role-based dashboards for users, sellers, and delivery agents.",
+      "An AI-powered precision agriculture ecosystem that converts soil data, real-time weather metrics, and leaf imagery into actionable farming insights, maximizing yield and diagnosing crop diseases.",
 
-    // 🔥 Replace emoji with image (IMPORTANT)
-    image: deliverx,
+    image: krushi_sathi,
 
     techStack: [
-      "MongoDB",
-      "Express",
+      "Flask",
+      "Python",
       "React",
-      "Node.js",
-      "Socket.IO",
-      "JWT Auth"
+      "Tailwind CSS",
+      "TensorFlow Lite",
+      "Scikit-Learn",
+      "Pandas",
+      "Joblib",
+      'GEN AI'
     ],
 
-    // 🔥 Add highlights (very powerful for recruiters)
     highlights: [
-      "Real-time order tracking using WebSockets",
-      "OTP-based secure delivery verification",
-      "Role-based dashboards (User, Seller, Delivery)",
-      "Scalable backend architecture with REST APIs"
+      "Engineered multi-stage predictive ML models for crop recommendation and accurate regional yield estimation",
+      "Integrated OpenWeather API to provide dynamic, weather-adaptive irrigation schedules and real-time climate alerts",
+      "Implemented a lightweight computer vision pipeline using TFLite to diagnose leaf diseases and prescribe treatment dosages",
+      "Optimized backend architecture with lazy-loading models to eliminate server cold-start delays and drop boot times under 2 seconds",
+      "Built a highly responsive, intuitive frontend dashboard for tracking soil health metrics and regional weather variables"
     ],
-
-    githubUrl: "https://github.com/pradeepkumarsingha/DeliverX",
-
-    // 🔥 If not deployed → remove or keep null
-    liveUrl: null,
-
+    githubUrl: "https://github.com/pradeepkumarsingha/Krushi-Sathi",
+    liveUrl: "https://krushi-sathi.vercel.app/",
     featured: true
+
   },
   {
-    id: 2,
-    title: "AI Interview Practice Platform",
-    description:
-      "A GenAI-powered career guidance platform that leverages Large Language Models (LLMs) to analyze user skills, interests, and goals, providing personalized career recommendations, learning paths, and interview preparation guidance.",
+  id: 2,
+  title: "AI Career Twin",
+  description:
+    "A AI-powered career development platform that creates a personalized digital twin of users to analyze their skills, resume, interests, and career goals. The platform provides AI-driven career recommendations, skill gap analysis, interview preparation, ATS evaluation, and personalized learning roadmaps.",
 
-    image: ai_coach,
+  image: carrier_twin,
 
-    techStack: [
-      "Python",
-      "LLM",
-      "GenAI",
-      "OpenAI API",
-      "React",
-      "Node.js"
-    ],
+  techStack: [
+    "Python",
+    "FastAPI",
+    "React",
+    "Node.js",
+    "MongoDB",
+    "LLM",
+    "GenAI",
+    "Machine Learning",
+    "NLP",
+    "Data Analytics",
+  ],
 
-    highlights: [
-      "LLM-based personalized career recommendations",
-      "GenAI-driven resume and interview guidance",
-      "Dynamic learning path generation based on user profile",
-      "Interactive chatbot-style career assistant",
-      "Real-time responses using API-based AI models"
-    ],
+  highlights: [
+    "Personalized Digital Twin for career analysis and guidance",
+    "AI-powered role prediction and career recommendations",
+    "Skill gap analysis with customized learning roadmaps",
+    "ATS resume scoring and resume improvement suggestions",
+    "AI mock interview system with real-time feedback",
+    "Real-time recommendations using LLM-based AI models",
+    "Fully deployed and production-ready platform",
+    "Live Interview Practice Platform with AI-driven feedback and scoring"
+  ],
 
-    githubUrl: "https://github.com/pradeepkumarsingha/Ai-Interview-Practice-Platform",
+  githubUrl: "https://github.com/pradeepkumarsingha/Ai-Interview-Practice-Platform",
 
-    liveUrl: null,
+  liveUrl: "https://ai-carrier-twin.vercel.app/",
 
-    featured: true
-  },
+  featured: true
+},
   {
     id: 3,
     title: "Estate AI",
@@ -106,6 +112,39 @@ export const projects = [
   },
   {
     id: 4,
+    title: "DeliverX",
+    description:
+      "A scalable full-stack food delivery platform with real-time order tracking, OTP-based delivery verification, and role-based dashboards for users, sellers, and delivery agents.",
+
+    // 🔥 Replace emoji with image (IMPORTANT)
+    image: deliverx,
+
+    techStack: [
+      "MongoDB",
+      "Express",
+      "React",
+      "Node.js",
+      "Socket.IO",
+      "JWT Auth"
+    ],
+
+    // 🔥 Add highlights (very powerful for recruiters)
+    highlights: [
+      "Real-time order tracking using WebSockets",
+      "OTP-based secure delivery verification",
+      "Role-based dashboards (User, Seller, Delivery)",
+      "Scalable backend architecture with REST APIs"
+    ],
+
+    githubUrl: "https://github.com/pradeepkumarsingha/DeliverX",
+
+    // 🔥 If not deployed → remove or keep null
+    liveUrl: null,
+
+    featured: true
+  },
+  {
+    id: 5,
     title: "Crop Disease Detection",
     description:
       "An AI-powered crop disease detection system that uses deep learning and computer vision to identify plant diseases from leaf images, helping farmers take timely and accurate actions.",
@@ -136,7 +175,7 @@ export const projects = [
     featured: true
   },
   {
-    id: 5,
+    id: 6,
     title: "PKS Portfolio",
     description:
       "A personal portfolio website built with React and Tailwind CSS, showcasing projects, skills, and achievements in a visually appealing and responsive design.",
@@ -161,39 +200,6 @@ export const projects = [
     ],
     githubUrl: "https://github.com/pradeepkumarsingha/Professional_Portfolio",
     liveUrl: "https://pradeepsportfoliopks.netlify.app/",
-    featured: false
-
-  },
-
-  {
-    id: 6,
-    title: "Krushi Sathi",
-    description:
-      "An AI-powered precision agriculture ecosystem that converts soil data, real-time weather metrics, and leaf imagery into actionable farming insights, maximizing yield and diagnosing crop diseases.",
-
-    image: krushi_sathi,
-
-    techStack: [
-      "Flask",
-      "Python",
-      "React",
-      "Tailwind CSS",
-      "TensorFlow Lite",
-      "Scikit-Learn",
-      "Pandas",
-      "Joblib",
-      'GEN AI'
-    ],
-
-    highlights: [
-      "Engineered multi-stage predictive ML models for crop recommendation and accurate regional yield estimation",
-      "Integrated OpenWeather API to provide dynamic, weather-adaptive irrigation schedules and real-time climate alerts",
-      "Implemented a lightweight computer vision pipeline using TFLite to diagnose leaf diseases and prescribe treatment dosages",
-      "Optimized backend architecture with lazy-loading models to eliminate server cold-start delays and drop boot times under 2 seconds",
-      "Built a highly responsive, intuitive frontend dashboard for tracking soil health metrics and regional weather variables"
-    ],
-    githubUrl: "https://github.com/pradeepkumarsingha/Krushi-Sathi",
-    liveUrl: "https://krushi-sathi.vercel.app/",
     featured: false
 
   }
