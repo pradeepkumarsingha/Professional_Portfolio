@@ -13,6 +13,7 @@ import Gallery from './components/Gallery';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import Education from './components/Education';
+import Chatbot from './components/Chatbot';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -40,6 +41,7 @@ function App() {
           <Achievements />
           <Gallery />
           <Contact />
+          <Chatbot />
         </main>
         <Footer />
       </div>
