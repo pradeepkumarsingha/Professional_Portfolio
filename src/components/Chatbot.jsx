@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
-const BACKEND_URL = (import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000').replace(/\/$/, '');
+const BACKEND_URL = (import.meta.env.VITE_BACKEND_URL || 'https://my-personal-chatbot-q03j.onrender.com').replace(/\/$/, '');
 const CHAT_ENDPOINT = `${BACKEND_URL}/api/chat`;
 const WELCOME_BUBBLE_SEEN_KEY = 'portfolio_chat_welcome_seen';
 
