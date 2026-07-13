@@ -15,15 +15,6 @@ const QUICK_SUGGESTIONS = [
   '💼 Experience'
 ];
 
-const FOLLOW_UPS = [
-  '🚀 Featured Projects',
-  '💻 Technical Skills',
-  '📄 Resume',
-  '🎓 Education',
-  '🏆 Certifications',
-  '💼 Internship Experience'
-];
-
 const getSessionId = () => {
   const key = 'portfolio_chat_session_id';
   const existing = localStorage.getItem(key);
@@ -33,163 +24,18 @@ const getSessionId = () => {
   return generated;
 };
 
-const normalizeStreamText = (rawText) => {
+// Stream handling utility to decouple SSE structure safely
+const cleanStreamChunk = (rawText) => {
   if (!rawText) return '';
-
-  // Handle SSE payloads by extracting each data: line and joining tokens.
   if (rawText.includes('data:')) {
     return rawText
       .split('\n')
-      .map((line) => line.trim())
-      .filter((line) => line.startsWith('data:'))
-      .map((line) => line.replace(/^data:\s?/, ''))
-      .join('')
-      .trim();
+      .filter((line) => line.trim().startsWith('data:'))
+      .map((line) => line.trim().replace(/^data:\s?/, ''))
+      .join('');
   }
-
-  return rawText.trim();
+  return rawText;
 };
-
-const formatBotMessage = (text) => {
-  if (!text) return '';
-
-  return text
-    .replace(/include:\s*(\d+\.)/gi, 'include:\n$1')
-    .replace(/(\d+\.\s+\*\*)/g, '\n$1')
-    .replace(/^\n+/, '')
-    .replace(/\n{3,}/g, '\n\n')
-    .trim();
-};
-
-const normalizeMarkdownLayout = (text) => {
-  if (!text) return '';
-
-  let normalized = text.replace(/\r\n/g, '\n');
-
-  // Repair accidental line breaks inside words like "LL\nM" or "domain\ns".
-  normalized = normalized.replace(/([A-Za-z])\n([A-Za-z])/g, '$1$2');
-
-  // Drop empty hash-only heading artifacts.
-  normalized = normalized.replace(/^\s*#+\s*$/gm, '');
-
-  // Convert setext-like separators and compressed heading markers.
-  normalized = normalized.replace(/\*\*([^*\n]+)\*\*={3,}/g, '## $1\n');
-  normalized = normalized.replace(/={3,}/g, '\n---\n');
-  normalized = normalized.replace(/-{6,}/g, '\n---\n');
-  normalized = normalized.replace(/(?<!\n)(#{2,6}\s)/g, '\n$1');
-
-  // Ensure heading/title blocks do not glue into paragraphs.
-  normalized = normalized.replace(/(#{2,6}[^\n]*)([A-Z][^\n]*)/g, '$1\n$2');
-  normalized = normalized.replace(/(\*\*[^*\n]+\*\*)([A-Z][a-z])/g, '$1\n$2');
-
-  // Expand compact internship-style cards.
-  normalized = normalized.replace(/(####\s+\*\*[^*\n]+\*\*)\s*\*\*([^*\n]+)\*\*/g, '$1\n- **Organization:** $2');
-  normalized = normalized.replace(/\*\*Duration:\*\*\s*/gi, '\n- **Duration:** ');
-  normalized = normalized.replace(/\*\*Impact:\*\*\s*/gi, '\n- **Impact:**\n');
-  normalized = normalized.replace(/\*\*([^*\n]+):\*\*(\S)/g, '**$1:** $2');
-
-  // Fix malformed what's-next style blocks.
-  normalized = normalized.replace(/\*\*What's Next\?\*\*/gi, '### ❓ What\'s Next?');
-  normalized = normalized.replace(/\*\*What's Next\?\*/gi, '### ❓ What\'s Next?');
-
-  // Turn compressed star bullets into proper markdown list items.
-  normalized = normalized.replace(/\s\*\s+(?=[A-Za-z0-9])/g, '\n- ');
-  normalized = normalized.replace(/(?<!\n)\*\s+\*\*/g, '\n- **');
-  normalized = normalized.replace(/^\s*[-*]\s*$/gm, '');
-
-  // Add spacing between major blocks for readability.
-  normalized = normalized.replace(/(#{2,6}[^\n]*)(?=\S)/g, '$1\n');
-  normalized = normalized.replace(/\n(-\s\*\*Duration:\*\*[^\n]*)(?=\S)/g, '\n$1\n');
-  normalized = normalized.replace(/\n{3,}/g, '\n\n');
-
-  return normalized.trim();
-};
-
-const detectIntent = (message) => {
-  const query = message.toLowerCase();
-  if (query.includes('project')) return 'projects';
-  if (query.includes('skill') || query.includes('tech stack')) return 'skills';
-  if (query.includes('experience') || query.includes('intern')) return 'experience';
-  return 'general';
-};
-
-const buildPromptInstructions = (intent) => {
-  const common = [
-    'Write as a professional AI assistant representing software engineer Pradeep Kumar Singh.',
-    'Never output one long paragraph. Keep it scannable in 10 seconds.',
-    'Use markdown with headings, bold keywords, short paragraphs, bullet points, and numbered lists when useful.',
-    'Tone: friendly, professional, recruiter-focused, confident.',
-    'Keep the answer concise (about 150-300 words unless asked for more detail).',
-    'Do not repeat information unnecessarily.',
-    'End with follow-up suggestions and one engaging question.'
-  ];
-
-  const intentSpecific = {
-    projects:
-      'If discussing projects, include for each: Project name, problem solved, tech stack, key features, and impact.',
-    skills:
-      'If discussing skills, categorize into: Programming Languages, Frameworks, AI/ML, Databases, Cloud & DevOps, Tools.',
-    experience:
-      'If discussing experience, present it as a timeline format with role, organization, duration, and impact bullets.',
-    general:
-      'Use clear sections and highlight recruiter-relevant strengths and measurable outcomes.'
-  };
-
-  return `${common.join('\n')}\n${intentSpecific[intent]}`;
-};
-
-const buildRecruiterPrompt = (userMessage) => {
-  const intent = detectIntent(userMessage);
-  return `User question:\n${userMessage}\n\nResponse instructions:\n${buildPromptInstructions(intent)}\n\nReturn only the final answer in markdown.`;
-};
-
-const ensureStructuredMarkdown = (rawText, intent) => {
-  const text = normalizeMarkdownLayout(formatBotMessage(rawText || ''));
-  if (!text) return '';
-
-  const hasMarkdown = /(^|\n)#{2,3}\s|(^|\n)\s*[-*]\s|(^|\n)\s*\d+\.\s|\*\*/m.test(text);
-  if (hasMarkdown) return text;
-
-  const headingByIntent = {
-    projects: '🚀 Project Highlights',
-    skills: '💻 Technical Skills Overview',
-    experience: '💼 Experience Snapshot',
-    general: '🎯 Quick Recruiter Summary'
-  };
-
-  const sentences = text
-    .split(/(?<=[.!?])\s+/)
-    .map((part) => part.trim())
-    .filter(Boolean);
-
-  const intro = sentences[0] || text;
-  const points = (sentences.length > 1 ? sentences.slice(1) : [text]).slice(0, 6);
-
-  return `## ${headingByIntent[intent]}\n\n${intro}\n\n### ✅ Key Points\n${points
-    .map((point) => `- ${point.replace(/\s+/g, ' ')}`)
-    .join('\n')}`;
-};
-
-const appendFollowUps = (markdownText) => {
-  const alreadyHasFollowUps = /You can also ask|Would you like|Interested|Want to|\n---\n\n💬/i.test(markdownText);
-  if (alreadyHasFollowUps) return markdownText;
-
-  return `${markdownText}\n\n---\n\n💬 You can also ask me about:\n\n${FOLLOW_UPS.map((item) => `- ${item}`).join(
-    '\n'
-  )}\n\nWould you like me to highlight the best-fit project for your target role?`;
-};
-
-const finalizeAssistantResponse = (rawText, userMessage) => {
-  const intent = detectIntent(userMessage);
-  const structured = ensureStructuredMarkdown(rawText, intent);
-  return appendFollowUps(structured);
-};
-
-const nowTimestamp = () =>
-  new Date().toLocaleTimeString([], {
-    hour: '2-digit',
-    minute: '2-digit'
-  });
 
 const TypingDots = () => (
   <div className="inline-flex items-center gap-1" aria-label="Generating response">
@@ -210,55 +56,44 @@ const markdownComponents = {
   strong: ({ children }) => <strong className="font-semibold text-white">{children}</strong>
 };
 
+const nowTimestamp = () =>
+  new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
 export default function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
+  const [input, setInput] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
+  const [hasConnectionError, setHasConnectionError] = useState(false);
+  const [showAskBubble, setShowAskBubble] = useState(() => localStorage.getItem(WELCOME_BUBBLE_SEEN_KEY) !== 'true');
+  const [isAskBubbleFading, setIsAskBubbleFading] = useState(false);
+  
   const [messages, setMessages] = useState([
     {
       id: `msg_${Date.now()}`,
       role: 'bot',
-      text:
-        "Welcome to Pradeep's AI Assistant.\n\nI can help you with:\n1. Featured AI/ML projects and outcomes\n2. Skills, tools, and tech stack\n3. Experience, internships, and certifications\n4. Education and career focus",
+      text: "Welcome to Pradeep's AI Assistant.\n\nI can help you with:\n1. Featured AI/ML projects and outcomes\n2. Skills, tools, and tech stack\n3. Experience, internships, and certifications\n4. Education and career focus",
       timestamp: nowTimestamp()
     }
   ]);
-  const [input, setInput] = useState('');
-  const [isTyping, setIsTyping] = useState(false);
-  const [hasConnectionError, setHasConnectionError] = useState(false);
-  const [showAskBubble, setShowAskBubble] = useState(() => {
-    return localStorage.getItem(WELCOME_BUBBLE_SEEN_KEY) !== 'true';
-  });
-  const [isAskBubbleFading, setIsAskBubbleFading] = useState(false);
-  const chatEndRef = useRef(null);
 
+  const chatEndRef = useRef(null);
   const hasUserMessages = useMemo(() => messages.some((msg) => msg.role === 'user'), [messages]);
 
   useEffect(() => {
-    if (isOpen) {
-      chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }
+    if (isOpen) chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isTyping, isOpen]);
 
   useEffect(() => {
     if (!showAskBubble) return undefined;
-
     const fadeTimer = setTimeout(() => setIsAskBubbleFading(true), 7000);
     const hideTimer = setTimeout(() => setShowAskBubble(false), 8000);
-
-    return () => {
-      clearTimeout(fadeTimer);
-      clearTimeout(hideTimer);
-    };
+    return () => { clearTimeout(fadeTimer); clearTimeout(hideTimer); };
   }, [showAskBubble]);
 
   useEffect(() => {
-    const onKeyDown = (event) => {
-      if (event.key === 'Escape') {
-        setIsOpen(false);
-      }
-    };
-
-    window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
+    const handleKeyDown = (e) => { if (e.key === 'Escape') setIsOpen(false); };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
   const openChat = () => {
@@ -267,20 +102,12 @@ export default function Chatbot() {
     localStorage.setItem(WELCOME_BUBBLE_SEEN_KEY, 'true');
   };
 
-  const toggleChat = () => {
-    if (!isOpen) {
-      openChat();
-      return;
-    }
-    setIsOpen(false);
-  };
-
   const sendMessage = async (messageText) => {
     if (!messageText.trim() || isTyping) return;
 
-    const userMessage = messageText.trim();
-    const userMessageId = `user_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
-    const botMessageId = `bot_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+    const userQuery = messageText.trim();
+    const userMessageId = `user_${Date.now()}`;
+    const botMessageId = `bot_${Date.now()}`;
 
     setInput('');
     setIsTyping(true);
@@ -288,7 +115,7 @@ export default function Chatbot() {
 
     setMessages((prev) => [
       ...prev,
-      { id: userMessageId, role: 'user', text: userMessage, timestamp: nowTimestamp() },
+      { id: userMessageId, role: 'user', text: userQuery, timestamp: nowTimestamp() },
       { id: botMessageId, role: 'bot', text: 'Thinking...', timestamp: nowTimestamp() }
     ]);
 
@@ -296,28 +123,24 @@ export default function Chatbot() {
       const response = await fetch(CHAT_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: buildRecruiterPrompt(userMessage), session_id: getSessionId() })
+        body: JSON.stringify({ message: userQuery, session_id: getSessionId() })
       });
 
-      if (!response.ok) {
-        throw new Error(`Request failed with status ${response.status}`);
-      }
+      if (!response.ok) throw new Error(`Server returned status: ${response.status}`);
 
       const contentType = response.headers.get('content-type') || '';
-
+      
+      // Fallback: If JSON response instead of a native chunked stream
       if (contentType.includes('application/json')) {
         const data = await response.json();
-        const reply = data.reply || data.message || data.response || 'No response content was returned.';
-        const finalReply = finalizeAssistantResponse(reply, userMessage);
+        const reply = data.reply || data.message || data.response || 'No content found.';
         setMessages((prev) =>
-          prev.map((msg) =>
-            msg.id === botMessageId ? { ...msg, text: finalReply, timestamp: nowTimestamp() } : msg
-          )
+          prev.map((m) => m.id === botMessageId ? { ...m, text: reply, timestamp: nowTimestamp() } : m)
         );
         return;
       }
 
-      if (!response.body) throw new Error('No readable stream response body.');
+      if (!response.body) throw new Error('No readable body payload found on connection stream.');
 
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
@@ -327,61 +150,32 @@ export default function Chatbot() {
         const { value, done } = await reader.read();
         if (done) break;
 
-        const chunkText = decoder.decode(value, { stream: true });
-        accumulatedText += chunkText;
-        const normalizedText = formatBotMessage(normalizeStreamText(accumulatedText));
+        accumulatedText += decoder.decode(value, { stream: true });
+        const cleanOutput = cleanStreamChunk(accumulatedText);
 
         setMessages((prev) =>
-          prev.map((msg) => (msg.id === botMessageId ? { ...msg, text: normalizedText || 'Thinking...' } : msg))
+          prev.map((m) => m.id === botMessageId ? { ...m, text: cleanOutput || 'Thinking...' } : m)
         );
       }
 
-      const finalReply = finalizeAssistantResponse(normalizeStreamText(accumulatedText), userMessage);
+      // Append standard metadata variations once stream hits completed state
       setMessages((prev) =>
-        prev.map((msg) =>
-          msg.id === botMessageId
-            ? {
-                ...msg,
-                text: finalReply,
-                timestamp: nowTimestamp()
-              }
-            : msg
-        )
+        prev.map((m) => m.id === botMessageId ? { ...m, timestamp: nowTimestamp() } : m)
       );
 
-      if (!accumulatedText.trim()) {
-        setMessages((prev) =>
-          prev.map((msg) =>
-            msg.id === botMessageId
-              ? {
-                  ...msg,
-                  text: 'I did not receive a response from the assistant service. Please try again.'
-                }
-              : msg
-          )
-        );
-      }
     } catch (error) {
-      console.error('Chatbot error:', error);
+      console.error('Chatbot integration system error:', error);
       setHasConnectionError(true);
       setMessages((prev) =>
-        prev.map((msg) =>
-          msg.id === botMessageId
-            ? {
-                ...msg,
-                text: 'I am unable to connect to the assistant service right now. Please try again in a moment.'
-              }
-            : msg
+        prev.map((m) =>
+          m.id === botMessageId
+            ? { ...m, text: 'I am unable to connect to the assistant service right now. Please try again in a moment.' }
+            : m
         )
       );
     } finally {
       setIsTyping(false);
     }
-  };
-
-  const handleSendMessage = async (e) => {
-    e.preventDefault();
-    await sendMessage(input);
   };
 
   return (
@@ -409,9 +203,7 @@ export default function Chatbot() {
             aria-live="polite"
           >
             <p className="font-semibold">👋 Hi, I'm Pradeep's AI Assistant.</p>
-            <p className="mt-1 text-xs text-indigo-100/85">
-              Ask me about my projects, skills, experience, or resume.
-            </p>
+            <p className="mt-1 text-xs text-indigo-100/85">Ask me about my projects, skills, experience, or resume.</p>
             <div className="absolute -bottom-2 right-7 h-4 w-4 rotate-45 border-b border-r border-indigo-300/25 bg-[#1a2545]/90" />
           </motion.div>
         )}
@@ -433,7 +225,7 @@ export default function Chatbot() {
                     <div>
                       <div className="flex items-center gap-2 text-sm font-semibold text-white">
                         <span aria-hidden="true">🤖</span>
-                        <span>AI Assistant</span>
+                        <span>PKS Assistant</span>
                         <span className="ml-2 inline-flex items-center gap-1 text-xs font-medium text-emerald-300">
                           <span className={`h-2 w-2 rounded-full ${hasConnectionError ? 'bg-red-400' : 'bg-emerald-400'}`} />
                           Online
@@ -441,11 +233,10 @@ export default function Chatbot() {
                       </div>
                       <p className="mt-1 text-xs text-slate-300">Ask anything about Pradeep.</p>
                     </div>
-
                     <button
                       onClick={() => setIsOpen(false)}
                       aria-label="Close chatbot"
-                      className="rounded-lg border border-white/15 bg-white/5 p-1.5 text-slate-300 transition hover:bg-white/10 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
+                      className="rounded-lg border border-white/15 bg-white/5 p-1.5 text-slate-300 transition hover:bg-white/10 hover:text-white"
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="h-4 w-4">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -454,10 +245,7 @@ export default function Chatbot() {
                   </div>
                 </div>
 
-                <div
-                  className="flex-1 space-y-3 overflow-y-auto px-3 py-3 sm:px-4 [&::-webkit-scrollbar]:w-0"
-                  style={{ msOverflowStyle: 'none', scrollbarWidth: 'none' }}
-                >
+                <div className="flex-1 space-y-3 overflow-y-auto px-3 py-3 sm:px-4 [&::-webkit-scrollbar]:w-0" style={{ scrollbarWidth: 'none' }}>
                   {!hasUserMessages && (
                     <div className="mb-1 rounded-xl border border-indigo-300/20 bg-indigo-500/10 p-3">
                       <p className="mb-2 text-xs font-medium uppercase tracking-wide text-indigo-200">Quick Suggestions</p>
@@ -467,7 +255,7 @@ export default function Chatbot() {
                             key={suggestion}
                             onClick={() => sendMessage(suggestion)}
                             disabled={isTyping}
-                            className="rounded-lg border border-indigo-300/25 bg-[#172443] px-2.5 py-2 text-left text-xs text-slate-200 transition hover:border-indigo-300/50 hover:bg-[#1b2a52] focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 disabled:cursor-not-allowed disabled:opacity-50"
+                            className="rounded-lg border border-indigo-300/25 bg-[#172443] px-2.5 py-2 text-left text-xs text-slate-200 transition hover:border-indigo-300/50 hover:bg-[#1b2a52] disabled:opacity-50"
                           >
                             {suggestion}
                           </button>
@@ -483,26 +271,18 @@ export default function Chatbot() {
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -8 }}
-                        transition={{ duration: 0.2, ease: 'easeOut' }}
+                        transition={{ duration: 0.2 }}
                         className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
                       >
                         <div className="max-w-[80%]">
                           {msg.role === 'bot' && (
                             <div className="mb-1 flex items-center gap-1 text-[10px] font-medium uppercase tracking-wide text-indigo-200">
-                              <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-violet-500 text-[10px] font-bold text-white">
-                                AI
-                              </span>
+                              <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-violet-500 text-[10px] font-bold text-white">AI</span>
                               Assistant
                             </div>
                           )}
 
-                          <div
-                            className={`rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed ${
-                              msg.role === 'user'
-                                ? 'bg-gradient-to-br from-[#3f68ff] to-[#7c5dff] text-white shadow-[0_10px_30px_rgba(76,105,255,0.35)]'
-                                : 'border border-white/10 bg-[#172443] text-slate-100'
-                            }`}
-                          >
+                          <div className={`rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed ${msg.role === 'user' ? 'bg-gradient-to-br from-[#3f68ff] to-[#7c5dff] text-white' : 'border border-white/10 bg-[#172443] text-slate-100'}`}>
                             {msg.role === 'bot' && msg.text === 'Thinking...' ? (
                               <div>
                                 <div className="mb-1 text-xs text-indigo-200">Thinking...</div>
@@ -518,17 +298,15 @@ export default function Chatbot() {
                               <span className="whitespace-pre-wrap break-words">{msg.text}</span>
                             )}
                           </div>
-
                           {msg.timestamp && <p className="mt-1 px-1 text-[10px] text-slate-400">{msg.timestamp}</p>}
                         </div>
                       </motion.div>
                     ))}
                   </AnimatePresence>
-
                   <div ref={chatEndRef} />
                 </div>
 
-                <form onSubmit={handleSendMessage} className="border-t border-white/10 bg-white/5 p-3 backdrop-blur-sm">
+                <form onSubmit={(e) => { e.preventDefault(); sendMessage(input); }} className="border-t border-white/10 bg-white/5 p-3 backdrop-blur-sm">
                   <div className="flex items-center gap-2 rounded-full border border-indigo-300/25 bg-[#131f3b] p-1.5">
                     <input
                       type="text"
@@ -536,17 +314,15 @@ export default function Chatbot() {
                       onChange={(e) => setInput(e.target.value)}
                       placeholder="Ask about projects, skills, internships..."
                       disabled={isTyping}
-                      aria-label="Chat input"
                       className="h-9 flex-1 bg-transparent px-2 text-sm text-slate-100 placeholder:text-slate-400 focus:outline-none"
                     />
                     <button
                       type="submit"
                       disabled={isTyping || !input.trim()}
-                      aria-label="Send message"
-                      className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-[#3f68ff] to-[#7c5dff] text-white shadow-[0_8px_22px_rgba(76,105,255,0.45)] transition hover:brightness-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 disabled:cursor-not-allowed disabled:opacity-50"
+                      className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-[#3f68ff] to-[#7c5dff] text-white shadow-[0_8px_22px_rgba(76,105,255,0.45)] disabled:opacity-50"
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" className="h-4 w-4 -rotate-45">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M3.12 3a.5.5 0 0 1 .5-.5L18.45 7.55a1.5 1.5 0 0 1 0 2.9L3.62 14.5a.5.5 0 0 1-.5-.5a.5.5 0 0 1 .5-.5L17.43 9L3.62 4.5a.5.5 0 0 1-.5-.5z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M3.12 3a.5.5 0 0 1 .5-.5L18.45 7.55a1.5 1.5 0 0 1 0 2.9L3.62 14.5a.5.5 0 0 1-.5-.5a.5.5 0 0 1-.5-.5L17.43 9L3.62 4.5a.5.5 0 0 1-.5-.5z" />
                       </svg>
                     </button>
                   </div>
@@ -558,25 +334,13 @@ export default function Chatbot() {
       </AnimatePresence>
 
       <button
-        onClick={toggleChat}
-        aria-label={isOpen ? 'Collapse chatbot' : 'Open chatbot'}
-        className={`relative h-[60px] w-[60px] rounded-full border border-indigo-300/50 text-white transition-transform duration-200 hover:scale-[1.05] focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 ${
-          isOpen 
-            ? 'bg-[#1a233e] shadow-[0_8px_24px_rgba(55,65,140,0.35)]' 
-            : 'bg-gradient-to-br from-[#3f68ff] via-[#5b6dff] to-[#7d5bff] shadow-[0_10px_30px_rgba(90,82,255,0.45)] hover:shadow-[0_12px_35px_rgba(111,89,255,0.62)]'
-        }`}
+        onClick={() => (isOpen ? setIsOpen(false) : openChat())}
+        className={`relative h-[60px] w-[60px] rounded-full border border-indigo-300/50 text-white transition-transform duration-200 hover:scale-[1.05] ${isOpen ? 'bg-[#1a233e]' : 'bg-gradient-to-br from-[#3f68ff] via-[#5b6dff] to-[#7d5bff]'}`}
       >
-        {!isOpen && (
-          <span
-            className="pointer-events-none absolute inset-[-6px] rounded-full border border-indigo-300/45"
-            style={{ animation: 'chatbotPulse 5s ease-in-out infinite' }}
-          />
-        )}
-
+        {!isOpen && <span className="pointer-events-none absolute inset-[-6px] rounded-full border border-indigo-300/45" style={{ animation: 'chatbotPulse 5s ease-in-out infinite' }} />}
         <span className="absolute -bottom-0.5 -right-0.5 h-3.5 w-3.5 rounded-full border-2 border-[#131b34] bg-emerald-400" />
-
         {isOpen ? (
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="h-6 w-6">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="h-6 w-6 mx-auto">
             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
           </svg>
         ) : (
