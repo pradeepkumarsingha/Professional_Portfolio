@@ -1,6 +1,7 @@
 import deliverx from "../utils/deliver.png";
 import carrier_twin from "../utils/carrier_twin.png";
 import estate_ai from "../utils/estateAi.png";
+import banknote_ai from "../utils/bankNote.png"
 import crop_disease from "../utils/crop.png";
 import portfolio from "../utils/portfolio.png";
 import krushi_sathi from "../utils/krushi-sathi.jpg";
@@ -112,6 +113,40 @@ export const projects = [
   },
   {
     id: 4,
+    title: "BankNote AI",
+    description:
+      "BankNote AI is an AI-powered banknote authentication system that uses Machine Learning  to identify and classify banknotes is Fake or real. The project provides a FastAPI-based backend for model inference and a modern React frontend for an interactive user experience.",
+    image: banknote_ai,
+
+    techStack: [
+      "React",
+      "Node.js",
+      "MongoDB",
+      "Docker",
+      "Python",
+      "Machine Learning",
+      "Data Science",
+      "Data Analytics"
+    ],
+
+    highlights: [
+      "ML-based banknote authenticity classification",
+"Classifies banknotes using statistical features such as variance, skewness, curtosis, and entropy",
+"Automated classification of genuine and forged banknotes",
+"FastAPI-based ML prediction API",
+"React-based interactive prediction interface",
+"Dockerized backend for reliable deployment",
+"End-to-end ML application from feature input to classification"
+    ],
+
+    githubUrl: "https://github.com/pradeepkumarsingha/Banknote-AI",
+
+    liveUrl: "https://banknote-ai.vercel.app/",
+
+    featured: true
+  },
+  {
+    id: 5,
     title: "DeliverX",
     description:
       "A scalable full-stack food delivery platform with real-time order tracking, OTP-based delivery verification, and role-based dashboards for users, sellers, and delivery agents.",
@@ -144,7 +179,7 @@ export const projects = [
     featured: true
   },
   {
-    id: 5,
+    id: 6,
     title: "Crop Disease Detection",
     description:
       "An AI-powered crop disease detection system that uses deep learning and computer vision to identify plant diseases from leaf images, helping farmers take timely and accurate actions.",
@@ -175,7 +210,7 @@ export const projects = [
     featured: true
   },
   {
-    id: 6,
+    id: 7,
     title: "PKS Portfolio",
     description:
       "A personal portfolio website built with React and Tailwind CSS, showcasing projects, skills, and achievements in a visually appealing and responsive design.",

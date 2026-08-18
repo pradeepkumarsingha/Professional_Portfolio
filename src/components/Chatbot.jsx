@@ -27,14 +27,59 @@ const getSessionId = () => {
 // Stream handling utility to decouple SSE structure safely
 const cleanStreamChunk = (rawText) => {
   if (!rawText) return '';
+
   if (rawText.includes('data:')) {
     return rawText
       .split('\n')
       .filter((line) => line.trim().startsWith('data:'))
       .map((line) => line.trim().replace(/^data:\s?/, ''))
-      .join('');
+      .join('\n');
   }
+
   return rawText;
+};
+
+// Resume text can arrive from the retrieval service with PDF-style line breaks
+// between individual words. Normalise it before Markdown renders it so a date or
+// technology name does not become a column of separate words in the chat bubble.
+const formatAssistantResponse = (rawText) => {
+  if (!rawText) return '';
+
+  const repairedTerms = [
+    [/\bIntern\s+ship\b/gi, 'Internship'],
+    [/\bTra\s+inee\b/gi, 'Trainee'],
+    [/\bOr\s+iented\b/gi, 'Oriented'],
+    [/\bGener\s+ative\b/gi, 'Generative'],
+    [/\bTechn\s+ologies\b/gi, 'Technologies'],
+    [/\bSc\s+ikit\b/gi, 'Scikit'],
+    [/\bTensor\s+Flow\b/gi, 'TensorFlow'],
+    [/\bM\s+LOps\b/gi, 'MLOps'],
+    [/\bBh\s+ub\s+anes\s+war\b/gi, 'Bhubaneswar'],
+    [/\bO\s+OP\b/gi, 'OOP']
+  ];
+
+  let text = rawText
+    .replace(/\r\n?/g, '\n')
+    .replace(/[\t\u00a0]+/g, ' ')
+    .replace(/\s*\n\s*/g, ' ')
+    .replace(/\b(\d{3})\s+(\d)\b/g, '$1$2')
+    .replace(/\*\*\s+/g, '**')
+    .replace(/\s+\*\*/g, '**')
+    .replace(/\*\s+([^*]+?)\s+\*/g, '*$1*')
+    .replace(/\b(\d+)\s*\.\s*(?=\*\*)/g, '$1. ')
+    .replace(/\s+:/g, ':')
+    .replace(/\s{2,}/g, ' ')
+    .trim();
+
+  repairedTerms.forEach(([pattern, replacement]) => {
+    text = text.replace(pattern, replacement);
+  });
+
+  // Restore a clean Markdown hierarchy after collapsing malformed source lines.
+  return text
+    .replace(/\s+(?=\d+\. \*\*)/g, '\n\n')
+    .replace(/\s*[•]\s*/g, '\n- ')
+    .trim();
 };
 
 const TypingDots = () => (
@@ -133,7 +178,7 @@ export default function Chatbot() {
       // Fallback: If JSON response instead of a native chunked stream
       if (contentType.includes('application/json')) {
         const data = await response.json();
-        const reply = data.reply || data.message || data.response || 'No content found.';
+        const reply = formatAssistantResponse(data.reply || data.message || data.response || 'No content found.');
         setMessages((prev) =>
           prev.map((m) => m.id === botMessageId ? { ...m, text: reply, timestamp: nowTimestamp() } : m)
         );
@@ -151,7 +196,7 @@ export default function Chatbot() {
         if (done) break;
 
         accumulatedText += decoder.decode(value, { stream: true });
-        const cleanOutput = cleanStreamChunk(accumulatedText);
+        const cleanOutput = formatAssistantResponse(cleanStreamChunk(accumulatedText));
 
         setMessages((prev) =>
           prev.map((m) => m.id === botMessageId ? { ...m, text: cleanOutput || 'Thinking...' } : m)
@@ -274,7 +319,7 @@ export default function Chatbot() {
                         transition={{ duration: 0.2 }}
                         className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
                       >
-                        <div className="max-w-[80%]">
+                        <div className={msg.role === 'user' ? 'max-w-[80%]' : 'max-w-[92%]'}>
                           {msg.role === 'bot' && (
                             <div className="mb-1 flex items-center gap-1 text-[10px] font-medium uppercase tracking-wide text-indigo-200">
                               <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-violet-500 text-[10px] font-bold text-white">AI</span>

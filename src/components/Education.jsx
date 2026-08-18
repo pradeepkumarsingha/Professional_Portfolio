@@ -9,7 +9,7 @@ const educationData = [
     location: "Bhubaneswar, Odisha",
     timeline: "4th Year (Continuing)",
     metricType: "CGPA",
-    metricValue: "8.9"
+    metricValue: "9.05"
   },
   {
     degree: "Higher Secondary Education (Class 12th - Science)",
@@ -17,7 +17,7 @@ const educationData = [
     location: "Bhograi, Odisha",
     timeline: "Completed in 2023",
     metricType: "Percentage",
-    metricValue: "77.6%"
+    metricValue: "78%"
   },
   {
     degree: "Secondary Education (Class 10th)",
