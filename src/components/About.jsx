@@ -40,16 +40,23 @@ export default function About() {
             viewport={{ once: true }}
             className="w-full space-y-6 text-center md:w-1/2 md:text-left"
           >
-            <p className="text-lg leading-relaxed text-slate-300">
-              Aspiring AI & Machine Learning Engineer with a strong foundation in Full Stack (MERN)
-              Development, focused on building intelligent, data-driven solutions.
-            </p>
+           
+<p className="text-lg leading-relaxed text-slate-300">
+  I am Pradeep Kumar Singha, a Computer Science and Engineering
+  student specializing in Artificial Intelligence at GIFT
+  Autonomous, Bhubaneswar. I focus on Python development,
+  Artificial Intelligence, Machine Learning and Full Stack
+  Development.
+</p>
 
-            <p className="text-lg leading-relaxed text-slate-300">
-              I actively explore areas such as predictive modeling, deep learning, and data analysis
-              using Python. Alongside this, I develop scalable web applications to integrate AI
-              solutions into practical and user-friendly systems.
-            </p>
+<p className="text-lg leading-relaxed text-slate-300">
+  My technical interests include Deep Learning, Natural Language
+  Processing, Generative AI, Large Language Models and modern
+  web technologies. I enjoy developing practical AI-powered
+  applications and scalable software solutions that address
+  real-world challenges.
+</p>
+
 
             <div className="rounded-r-lg border-l-4 border-purple-500 bg-white/5 p-4 pl-4">
               <p className="text-lg leading-relaxed italic text-slate-300">
