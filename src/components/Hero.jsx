@@ -66,9 +66,11 @@ export default function Hero() {
             </h3>
 
             <p className="text-slate-400 text-lg mb-8 max-w-2xl mx-auto md:mx-0">
-              Crafting scalable web applications while integrating AI & Machine Learning to deliver intelligent and impactful digital solutions.
-            </p>
-
+  I'm Pradeep Kumar Singha, a Python Developer and AI/ML Engineer
+  passionate about building intelligent applications, scalable
+  full-stack web solutions, Machine Learning systems and
+  Generative AI-powered products.
+          </p>
             <div className="flex flex-wrap gap-4 justify-center md:justify-start">
               <button
                 onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
@@ -105,10 +107,15 @@ export default function Hero() {
               <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 blur-2xl opacity-30 animate-pulse"></div>
 
               <img
-                src={profileImg}
-                alt="Pradeep Profile"
-                className="relative w-full h-full object-cover object-[center_30%] scale-110 rounded-full border-4 border-white/10 shadow-2xl"
-              />
+  src={profileImg}
+  alt="Pradeep Kumar Singha - Python Developer and AI/ML Engineer"
+  width="320"
+  height="320"
+  loading="eager"
+  fetchPriority="high"
+  decoding="async"
+  className="relative w-full h-full object-cover object-[center_30%] scale-110 rounded-full border-4 border-white/10 shadow-2xl"
+            />
             </div>
           </motion.div>
 
