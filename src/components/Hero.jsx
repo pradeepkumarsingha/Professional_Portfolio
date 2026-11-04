@@ -43,14 +43,19 @@ export default function Hero() {
 
             <h2 className="mb-3">Hello, I'm</h2>
 
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="text-5xl md:text-6xl font-bold mb-4 text-white"
-            >
-              Pradeep <span className="text-purple-500">Kumar</span> Singha
-            </motion.h1>
+           
+<motion.h1
+  initial={{ opacity: 0, y: 20 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ delay: 0.2 }}
+  className="text-5xl md:text-6xl font-bold mb-4 text-white"
+>
+  Pradeep <span className="text-purple-500">Kumar</span> Singha
+  <span className="sr-only">
+    - Python Developer, AI/ML Engineer and Full Stack Developer
+  </span>
+</motion.h1>
+
 
             {/* ✅ Typing Effect */}
             <h3 className="text-2xl md:text-3xl font-semibold mb-6">
