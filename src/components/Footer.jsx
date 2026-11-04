@@ -24,9 +24,10 @@ export default function Footer() {
               Pradeep.
             </motion.div>
             <p className="text-slate-400 text-sm leading-relaxed max-w-xs">
-              Building digital experiences with precision and passion. Focused on creating
-              performant applications that solve real-world problems.
-            </p>
+  Pradeep Kumar Singha is a Python Developer and AI/ML Engineer
+  focused on building intelligent applications, Generative AI
+  solutions and scalable full-stack web experiences.
+          </p>
             <div className="flex gap-3 mt-2">
               {socialLinks.map((s, i) => (
                 <motion.a
@@ -60,7 +61,7 @@ export default function Footer() {
             <div className="flex flex-col gap-4">
               <h4 className="text-white font-semibold text-sm uppercase tracking-wider">Contact Me</h4>
               <a
-                href="mailto:your.email@example.com"
+                href="mailto:mr.pradeepkumarsingha@gmail.com"
                 className="flex items-center gap-2 text-slate-400 hover:text-white text-sm transition-colors"
               >
                 <FaEnvelope className="text-blue-400" />
