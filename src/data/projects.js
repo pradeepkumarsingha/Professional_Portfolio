@@ -39,15 +39,12 @@ export const projects = [
     featured: true
 
   },
-  {
+  
+{
   id: 2,
   title: "AI Career Twin",
   description:
-    "An AI-powered career development platform that creates a
-personalized digital twin to analyze resumes, technical
-skills, career interests and professional goals. It offers
-AI-driven role recommendations, skill gap analysis,
-ATS resume evaluation and intelligent interview preparation.",
+    "An AI-powered career development platform that creates a personalized digital twin to analyze resumes, technical skills, career interests and professional goals. It offers AI-driven role recommendations, skill gap analysis, ATS resume evaluation and intelligent interview preparation.",
 
   image: carrier_twin,
 
@@ -72,50 +69,54 @@ ATS resume evaluation and intelligent interview preparation.",
     "AI mock interview system with real-time feedback",
     "Real-time recommendations using LLM-based AI models",
     "Fully deployed and production-ready platform",
-    "Live Interview Practice Platform with AI-driven feedback and scoring"
+    "Live Interview Practice Platform with AI-driven feedback and scoring",
   ],
 
-  githubUrl: "https://github.com/pradeepkumarsingha/Ai-Interview-Practice-Platform",
+  githubUrl:
+    "https://github.com/pradeepkumarsingha/Ai-Interview-Practice-Platform",
 
-  liveUrl: "https://ai-carrier-twin.vercel.app/",
+  liveUrl:
+    "https://ai-carrier-twin.vercel.app/",
 
-  featured: true
+  featured: true,
 },
-  {
-    id: 3,
-    title: "Estate AI",
-    description:
-      "A GenAI-powered real estate platform that uses Large Language Models (LLMs) to provide intelligent property recommendations, price insights, and personalized investment guidance based on user preferences and market trends.",
+{
+  id: 3,
+  title: "Estate AI",
+  description:
+    "A GenAI-powered real estate platform that uses Large Language Models (LLMs) to provide intelligent property recommendations, price insights, and personalized investment guidance based on user preferences and market trends.",
 
-    image: estate_ai,
+  image: estate_ai,
 
-    techStack: [
-      "React",
-      "Node.js",
-      "MongoDB",
-      "Python",
-      "Machine Learning",
-      "Data Science",
-      "Data Analytics"
-    ],
+  techStack: [
+    "React",
+    "Node.js",
+    "MongoDB",
+    "Python",
+    "Machine Learning",
+    "Data Science",
+    "Data Analytics",
+  ],
 
-    highlights: [
-      "Real estate platform that uses Large Language Models (LLMs) to provide intelligent property recommendations",
-      "Based on Real Data of Bhubaneswar",
-      "ML-based smart property recommendations",
-      "AI-powered price prediction and market analysis",
-      "ML-based business advisor",
-      "Personalized investment",
-      "Location-based filtering and intelligent suggestions"
-    ],
+  highlights: [
+    "Real estate platform powered by Large Language Models (LLMs)",
+    "Property insights based on real data from Bhubaneswar",
+    "ML-based smart property recommendations",
+    "AI-powered price prediction and market analysis",
+    "ML-based business advisor",
+    "Personalized investment guidance",
+    "Location-based filtering and intelligent suggestions",
+  ],
 
-    githubUrl: "https://github.com/pradeepkumarsingha/Ai-Powered-Price-Estimator-and-Business-Advisor",
+  githubUrl:
+    "https://github.com/pradeepkumarsingha/Ai-Powered-Price-Estimator-and-Business-Advisor",
 
-    liveUrl: "https://ai-powered-price-estimator-and-busi.vercel.app/",
+  liveUrl:
+    "https://ai-powered-price-estimator-and-busi.vercel.app/",
 
-    featured: true
-  },
-  {
+  featured: true,
+},
+{
     id: 4,
     title: "BankNote AI",
     description:
@@ -242,4 +243,5 @@ ATS resume evaluation and intelligent interview preparation.",
     featured: false
 
   }
+  
 ];
