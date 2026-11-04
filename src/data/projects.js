@@ -43,7 +43,11 @@ export const projects = [
   id: 2,
   title: "AI Career Twin",
   description:
-    "A AI-powered career development platform that creates a personalized digital twin of users to analyze their skills, resume, interests, and career goals. The platform provides AI-driven career recommendations, skill gap analysis, interview preparation, ATS evaluation, and personalized learning roadmaps.",
+    "An AI-powered career development platform that creates a
+personalized digital twin to analyze resumes, technical
+skills, career interests and professional goals. It offers
+AI-driven role recommendations, skill gap analysis,
+ATS resume evaluation and intelligent interview preparation.",
 
   image: carrier_twin,
 
@@ -234,7 +238,7 @@ export const projects = [
       "Deployed on Vercel for fast and reliable hosting"
     ],
     githubUrl: "https://github.com/pradeepkumarsingha/Professional_Portfolio",
-    liveUrl: "https://pradeepsportfoliopks.netlify.app/",
+    liveUrl: "https://pradeepkumarsingha.in",
     featured: false
 
   }
